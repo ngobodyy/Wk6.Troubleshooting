@@ -1,27 +1,28 @@
 // Create an instance of the Web Audio API's AudioContext
-const audioContext = new AudioContext();
+let audioContext = new AudioContext();
 
 /**
  * The oscillator node that generates sound.
  * It is initially undefined and will be created when the oscillator starts.
  * @type {OscillatorNode | undefined}
  */
-let oscillator;
+let oscillator = audioContext.createOscillator();
 
 /**
  * GainNode to control the volume of the oscillator.
  * Connected to the AudioContext destination (speakers).
  * @type {GainNode}
  */
-const gainNode = audioContext.createGain();
-gainNode.connect();
+let gainNode = audioContext.createGain();
+oscillator.connect(gainNode);
+gainNode.connect(audioContext.destination);
 gainNode.gain.value = 0.0; // Default volume level (50%)
 
 /**
  * Boolean flag to track whether the oscillator is currently playing.
  * @type {boolean}
  */
-let isPlaying = false;
+let isPlaying = false;  
 
 /**
  * Toggles the oscillator on and off when the button is clicked.
@@ -30,7 +31,7 @@ let isPlaying = false;
  */
 const toggleOscillator = function() {
     if (isPlaying) {
-        oscillator.stop(); // Stop the oscillator
+        oscillator.stop(); // Stop the oscillatzor
         oscillator.disconnect(); // Disconnect it from the gain node
         isPlaying = false;
         document.getElementById("toggle").textContent = "Play"; // Update button text
@@ -39,11 +40,12 @@ const toggleOscillator = function() {
         oscillator.type = document.getElementById("waveform").value; // Set waveform type
         oscillator.frequency.value = 440; // Default frequency (A4)
         oscillator.connect(gainNode); // Connect oscillator to gain
-        oscillator.start; // Start the oscillator
+        oscillator.start(); // Start the oscillator
         isPlaying = true;
         document.getElementById("toggle").textContent = "Stop"; // Update button text
     }
 };
+
 
 /**
  * Updates the gain (volume) of the oscillator when the slider is moved.
