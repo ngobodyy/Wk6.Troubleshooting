@@ -14,7 +14,6 @@ let oscillator = audioContext.createOscillator();
  * @type {GainNode}
  */
 let gainNode = audioContext.createGain();
-oscillator.connect(gainNode);
 gainNode.connect(audioContext.destination);
 gainNode.gain.value = 0.0; // Default volume level (50%)
 
@@ -36,7 +35,6 @@ const toggleOscillator = function() {
         isPlaying = false;
         document.getElementById("toggle").textContent = "Play"; // Update button text
     } else {
-        oscillator = audioContext.createOscillator(); // Create a new oscillator
         oscillator.type = document.getElementById("waveform").value; // Set waveform type
         oscillator.frequency.value = 440; // Default frequency (A4)
         oscillator.connect(gainNode); // Connect oscillator to gain
